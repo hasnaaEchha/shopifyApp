@@ -59,10 +59,11 @@ WSGI_APPLICATION = 'shopify_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'localhost',
-        'NAME': 'shopifyApp',
-        'USER': 'root',
-        'PASSWORD': 'root',
+        'HOST': 'db4free.net',
+        
+        'NAME': 'shopifyapp',
+        'USER': 'globaldeal',
+        'PASSWORD': 'shopifydev123',
     },
 }
 
