@@ -30,5 +30,4 @@ wsgi-intercept==0.5.1
 XlsxWriter==0.7.3
 gunicorn==19.4.5
 whitenoise==2.0.6
-dj-database-url==0.4.0
 psycopg2==2.6.1
