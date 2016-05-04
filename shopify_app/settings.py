@@ -80,7 +80,8 @@ USE_TZ = True
 #STATIC_PATH = os.path.join(BASE_DIR, 'public/static')
 STATIC_PATH = os.path.join(ROOT, 'public/static')
 STATIC_URL = '/public/static/'
-STATIC_ROOT = ROOT + '/public/static'
+#STATIC_ROOT = ROOT + '/public/static'
+STATIC_ROOT = os.path.join(ROOT, 'staticfiles')
 STATICFILES_DIRS = (
     STATIC_PATH,
 
@@ -93,6 +94,8 @@ LOGOUT_REDIRECT_URL = 'accounts/login/'
 TEMPLATE_DIRS = (
     os.path.join(ROOT, '../public/templates'),
 )
+
+
 
 # celery
 BROKER_URL = 'redis://localhost:6379/0'
