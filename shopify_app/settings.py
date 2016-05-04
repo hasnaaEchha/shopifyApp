@@ -128,7 +128,7 @@ STATIC_URL = '/staticfiles/'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'staticfiles'),
+    os.path.join(PROJECT_ROOT, 'shopify_app/staticfiles'),
 )
 
 # Simplified static file serving.
