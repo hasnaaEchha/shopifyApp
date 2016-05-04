@@ -1,13 +1,12 @@
 import os
 
-#ROOT = os.path.dirname(__file__)
+ROOT = os.path.dirname(__file__)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
 # Quick-start development settings - unsuitable for production
@@ -77,21 +76,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 STATIC_PATH = os.path.join(BASE_DIR, 'public/static')
 STATIC_URL = '/public/static/'
-#STATIC_ROOT = ROOT + '/public/static'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, '/public/static')
-
-#STATICFILES_DIRS = (
-#   STATIC_PATH,
-#)
+STATIC_ROOT = ROOT + '/public/static'
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, '../public/static'),
+    STATIC_PATH,
 )
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = 'accounts/login/'
 
 # TEMPLATE_DIRS
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, '../public/templates'),
+    os.path.join(ROOT, '../public/templates'),
 )
 
 # celery
