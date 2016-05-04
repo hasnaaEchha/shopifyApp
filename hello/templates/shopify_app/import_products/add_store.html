@@ -1,0 +1,11 @@
+
+{% verbatim %}
+<form method="post" name="addShopifyForm">
+  <div class="form-group">
+    <label for="shopifyUrl">Shop URL</label>
+    <input type="url" name="shopifyUrl" ng-model="shopifyUrl" class="form-control" id="shopifyUrl" placeholder="url">
+  </div>
+  <button ng-disabled="addShopifyForm.$invalid" type="button" ng-hide="verified" class="btn btn-default" ng-click="verifyUrl()">verify url</bu$
+  <button type="submit" ng-show="verified" ng-click="addStore()" class="btn btn-default"  >Submit</button>
+</form>
+{%  endverbatim %}
