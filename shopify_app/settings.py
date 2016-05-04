@@ -77,7 +77,7 @@ USE_TZ = True
 #STATIC_PATH = os.path.join(BASE_DIR, 'public/static')
 STATIC_PATH = os.path.join(ROOT, '../public/static')
 STATIC_URL = '/public/static/'
-STATIC_ROOT = ROOT + '/public/static'
+STATIC_ROOT = ROOT + '../public/static'
 STATICFILES_DIRS = (
     STATIC_PATH,
 
