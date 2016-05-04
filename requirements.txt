@@ -28,3 +28,4 @@ requests==2.8.1
 six==1.9.0
 wsgi-intercept==0.5.1
 XlsxWriter==0.7.3
+gunicorn==19.4.5
