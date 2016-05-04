@@ -56,16 +56,6 @@ WSGI_APPLICATION = 'shopify_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'db4free.net',
-        
-        'NAME': 'shopifyapp',
-        'USER': 'globaldeal',
-        'PASSWORD': 'shopifydev123',
-    },
-}
 
 
 # Internationalization
