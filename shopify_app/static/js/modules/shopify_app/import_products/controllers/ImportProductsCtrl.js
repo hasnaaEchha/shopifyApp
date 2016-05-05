@@ -45,7 +45,7 @@
         }
         
         $scope.goToStore=function(){
-            $window.location=$scope.shopifyUrl+"/admin/oauth/authorize?client_id="+$scope.apiKey+"&scope=read_products,write_products&redirect_uri=http://localhost:8003"
+            $window.location=$scope.shopifyUrl+"/admin/oauth/authorize?client_id="+$scope.apiKey+"&scope=read_products,write_products&redirect_uri=http://localhost"
         };
         $scope.resetSession=function(){
             console.log('reset');
