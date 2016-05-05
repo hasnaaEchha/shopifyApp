@@ -10,7 +10,7 @@
             ImportProductsController]);
     function ImportProductsController($window, $scope, $timeout, ShopifyService) {
         $scope.goToStore=function(){
-            $window.location=$scope.shopifyUrl+"/admin/oauth/authorize?client_id="+$scope.apiKey+"&scope=read&redirect_uri=https://immense-badlands-74664.herokuapp.com"
+            $window.location=$scope.shopifyUrl+"/admin/oauth/authorize?client_id="+$scope.apiKey+"&scope=read_products&redirect_uri=https://immense-badlands-74664.herokuapp.com"
         }
 
     }

@@ -1,4 +1,6 @@
 __author__ = 'hasnaa'
+
+import shopify
 from models import ShopifyKeys
 from common.httpUtil import *
 from django.http import HttpResponse
@@ -8,6 +10,10 @@ import requests
 
 api_key = ""
 api_secret = ""
+
+
+
+
 
 def get_setting():
     if ShopifyKeys.objects.count() == 0:

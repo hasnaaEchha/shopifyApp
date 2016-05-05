@@ -4,8 +4,8 @@
 
 myApp.factory('ShopifyService', ['$http', function ImexService($http) {
     var api = {};
-    api.getProducts = function () {
-       var http = $http.post('shopify_app/getProducts/',  { async: false});
+    api.getProducts = function (shop, token) {
+       var http = $http.post('shopify_app/get_products/',  {shop:shop,token:token,  async: false});
        return http;
     };
     return api;

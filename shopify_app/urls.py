@@ -3,12 +3,15 @@ from django.contrib import admin
 import settings
 from shopify_app.admin import PartialGroupView
 from shopify_app import views
+from django.views.generic.base import RedirectView
 
 
 urlpatterns = patterns('',
                        # Examples:
                        url(r'^$', 'shopify_app.views.home', name='home'),
-                       url(r'^shopify_app/getProducts/$', 'shopify_app.views.get_products', name='home'),
+                       #url(r'^favicon\.ico$', RedirectView.as_view(url='/static/favicon.ico', permanent=True)),
+                       url(r'^admin', include(admin.site.urls)),
+
 
 )
 
@@ -24,16 +27,13 @@ urlpatterns += patterns('',
                             name='tracking'),
 
 )
-
-urlpatterns += patterns('imex.view',
-                        url(r'^imex/track/$',
-                            'track', name='track'),
-                        url(r'^imex/updateSetting/$',
-                            'update_setting', name='update_setting'),
-                        url(r'^imex/getKeys/$',
-                            'get_keys', name='get_keys'),
+urlpatterns += patterns('shopify_app.views',
+                        url(r'^shopify_app/get_products/$',
+                            'get_products', name='get_products'),
 
 )
+
+
 # account manager
 
 handler404 = views.error404
