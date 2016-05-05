@@ -10,6 +10,7 @@ import requests
 import json
 import shopify
 admin_token = ""
+from django.forms.models import model_to_dict
 
 def home(request):
     return render(request, 'index.html', None)
@@ -73,40 +74,40 @@ def get_products(request):
                 headers = {'content-type': 'application/json', 'X-Shopify-Access-Token': admin_token}
                 print products
                 for product in products['products']:
-                    print product
+                    product=json.dumps(product)
                     data={
-                        "product": json.load(product)
+                        "product": json.loads(product)
+                        #"title": str(product['title'])
                     }
-                    print str(product['title'])
                     r = requests.post(
                         url,
 
-                        data=data,
+                        data=json.dumps(data),
                         headers=headers
                     )
                     print r.status_code
-                    r=json.loads(r.content)
+                    r = json.loads(r.content)
                     print r
         else:
             url = '{}{}'.format("https://"+store_url, "/admin/products.json")
             global admin_token
             headers = {'content-type': 'application/json', 'X-Shopify-Access-Token': admin_token}
-            print products
             for product in products['products']:
-                print product
-                data={
-                    "product": json.load(product)
+                #product = model_to_dict(product)
+
+                data = {
+                    "title": str(product['title'])
                 }
-                print str(product['title'])
                 r = requests.post(
                     url,
 
-                    data=data,
+                    data=json.dumps(data),
                     headers=headers
                 )
                 print r.status_code
                 r=json.loads(r.content)
                 print r
+        out['token'] = admin_token
         out = json.dumps(out)
         return HttpResponse(out, content_type="application/json")
 
