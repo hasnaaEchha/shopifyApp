@@ -9,6 +9,7 @@ from django.db.models.signals import post_save
 import requests
 import json
 import shopify
+admin_token = ""
 
 def home(request):
     return render(request, 'index.html', None)
@@ -16,12 +17,11 @@ def home(request):
 def get_products(request):
         out = {}
 
-        data = json.loads(request.body)
-        store_url = data['shop']
-        code = data['token']
+        request_data = json.loads(request.body)
+        store_url = request_data['shop']
+        code = request_data['token']
         client_id = "96f604950d6a94b17031adcefa8148a5"
         client_secret = "01ac8cee614321f6e76f079dcd729a7e"
-
 
         data = {
             'client_id': client_id,
@@ -29,7 +29,7 @@ def get_products(request):
             'code': code,
         }
         url = '{}{}'.format('https://'+store_url,'/admin/oauth/access_token')
-
+        print url
         headers = {'content-type': 'application/json'}
         r = requests.post(
             url,
@@ -37,29 +37,76 @@ def get_products(request):
             headers=headers
 
         )
-        print url
-        print code
-        print r
+        print r.status_code
         if r.status_code is 200:
             r = json.loads(r.content)
             token = r['access_token']
             headers = {'content-type': 'application/json', 'X-Shopify-Access-Token': token}
-            products = requests.get("https://"+store_url+"/products/admin.json", headers)
-            products = products.content
-            print products.title
-            print dir(products)
-        """
-        session = shopify.Session(store_url)
-        print store_url
-        token = session.request_token({'client_id':client_id,'client_secret':client_secret,'code':code,'timestamp':timestamp})
-        print token
+            url = '{}{}'.format("https://"+store_url, "/admin/products.json")
+            products = requests.get(url, headers=headers)
+            products = products.json()
 
-        session = shopify.Session(store_url, token)
-        shopify.ShopifyResource.activate_session(session)
-        shop = shopify.Shop.current()
-        product = shopify.Product.find(179761209)
-        print product
-        """
+
+        store_url = request_data['adminShop']
+        code = request_data['adminToken']
+        global admin_token
+        if len(admin_token) is 0:
+            data = {
+                'client_id': client_id,
+                'client_secret': client_secret,
+                'code': code,
+            }
+            url = '{}{}'.format('https://'+store_url,'/admin/oauth/access_token')
+            print url
+            headers = {'content-type': 'application/json'}
+            r = requests.post(
+                url,
+                data=json.dumps(data),
+                headers=headers
+
+            )
+            print r.status_code
+            if r.status_code is 200:
+                r = json.loads(r.content)
+                admin_token = r['access_token']
+                url = '{}{}'.format("https://"+store_url, "/admin/products.json")
+                headers = {'content-type': 'application/json', 'X-Shopify-Access-Token': admin_token}
+                print products
+                for product in products['products']:
+                    print product
+                    data={
+                        "product": json.load(product)
+                    }
+                    print str(product['title'])
+                    r = requests.post(
+                        url,
+
+                        data=data,
+                        headers=headers
+                    )
+                    print r.status_code
+                    r=json.loads(r.content)
+                    print r
+        else:
+            url = '{}{}'.format("https://"+store_url, "/admin/products.json")
+            global admin_token
+            headers = {'content-type': 'application/json', 'X-Shopify-Access-Token': admin_token}
+            print products
+            for product in products['products']:
+                print product
+                data={
+                    "product": json.load(product)
+                }
+                print str(product['title'])
+                r = requests.post(
+                    url,
+
+                    data=data,
+                    headers=headers
+                )
+                print r.status_code
+                r=json.loads(r.content)
+                print r
         out = json.dumps(out)
         return HttpResponse(out, content_type="application/json")
 

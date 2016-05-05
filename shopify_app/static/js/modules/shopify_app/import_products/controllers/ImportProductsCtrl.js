@@ -6,16 +6,18 @@
     'use strict';
 
     angular.module('shopifyApp')
-        .controller('ImportProductsController',['$window','$scope','$location','$timeout','ShopifyService',
+        .controller('ImportProductsController',['$window','$scope','$location','$localStorage','ShopifyService',
             ImportProductsController]);
-    function ImportProductsController($window, $scope,$location, $timeout, ShopifyService) {
+    function ImportProductsController($window, $scope,$location, $localStorage, ShopifyService) {
+
+
     	var strParams=$location.url().split('?')[1];
         console.log(strParams);
         if(strParams){
             var params = strParams.split('&');
-            var param,code,shop, timestamp1;
+            var param,code,shop;
             for(var i=0; i<params.length;i++){
-                param = params[i].split('=')
+                param = params[i].split('=');
                 if(param[0] == "code"){
                     code=param[1];
                 }
@@ -23,23 +25,33 @@
                 if(param[0]== "shop"){
                     shop=param[1];
                 }
+
                 
 
             }
-            console.log(code);
-            console.log(shop);
-            ShopifyService.getProducts(shop, code).then(function(response){
-                console.log(response);
-            }, function(error){
-                console.log(error);
-            })
+            if(!$localStorage['globalDeal']){
+                console.log('global deal')
+                $localStorage['shop'] = shop;
+                $localStorage['code'] = code;
+                $localStorage['globalDeal']=true;
+            }
+            else{
+                ShopifyService.getProducts($localStorage['shop'],$localStorage['code'],shop, code).then(function(response){
+                    console.log(response);
+                }, function(error){
+                    console.log(error);
+                })
+            }
         }
         
-            $scope.goToStore=function(){
-                console.log('hello');
-                $window.location=$scope.shopifyUrl+"/admin/oauth/authorize?client_id="+$scope.apiKey+"&scope=read_products&redirect_uri=http://localhost:8003"
-            }    
-        
+        $scope.goToStore=function(){
+            $window.location=$scope.shopifyUrl+"/admin/oauth/authorize?client_id="+$scope.apiKey+"&scope=read_products,write_products&redirect_uri=http://localhost:8003"
+        };
+        $scope.resetSession=function(){
+            console.log('reset');
+            $localStorage.$reset()
+        }
+
 
     }
 }());
