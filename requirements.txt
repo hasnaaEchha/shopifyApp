@@ -31,3 +31,4 @@ XlsxWriter==0.7.3
 gunicorn==19.4.5
 whitenoise==2.0.6
 psycopg2==2.6.1
+ShopifyAPI==2.1.5
