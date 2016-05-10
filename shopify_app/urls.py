@@ -30,6 +30,8 @@ urlpatterns += patterns('',
 urlpatterns += patterns('shopify_app.views',
                         url(r'^shopify_app/get_products/$',
                             'get_products', name='get_products'),
+                        url(r'^shopify_app/get_invasion_categories/$',
+                            'get_invasion_categories', name='get_invasion_categories'),
 
 )
 

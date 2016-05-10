@@ -1,12 +1,12 @@
-{% verbatim %}
 
-<form class="form-horizontal">
+<form class="form-horizontal"ng-hide="showFromForm">
+    {% csrf_token %}
 <fieldset>
 
 <!-- Text input-->
 
   <div class="form-group">
-    <label class="col-md-3 control-label" for="apiKey">Your API Key</label>
+    <label class="col-md-3 control-label" for="apiKey">Your shopify API Key</label>
     <div class="col-md-6">
     <input id="apiKey" name="trackingNumber" type="text" placeholder="API Key" ng-model="apiKey" class="form-control input-md">
 
@@ -32,6 +32,49 @@
 </fieldset>
 </form>
 
+<form class="form-horizontal" ng-show="showFromForm">
+    {% csrf_token %}
+<fieldset>
+
+<!-- Text input-->
+
+  <div class="form-group">
+    <label class="col-md-3 control-label" for="apiKey">Your Invasion API Key</label>
+    <div class="col-md-6">
+    <input id="apiKey" name="trackingNumber" type="text" placeholder="API Key" ng-model="apiKey" class="form-control input-md">
+
+    </div>
+  </div>
+
+<!-- Button -->
+<div class="form-group">
+  <div class="col-md-4 col-md-offset-5">
+    <button id="singlebutton" name="singlebutton" ng-click="goToStore()" class="btn btn-primary">Submit</button>
+    <button id="singlebutton" name="singlebutton" ng-click="resetSession()" class="btn btn-primary">Reset session</button>
+  </div>
+
+</div>
+</fieldset>
+</form>
+
+<form class="form-horizontal">
+    {% csrf_token %}
+<fieldset>
+
+<!-- Text input-->
+{% verbatim %}
+  <div class="form-group">
+    <label class="col-md-3 control-label" for="chinavasionCategory">select one category</label>
+    <div class="col-md-6">
+    <select  class="form-control" id="chinavasionCategory" name="trackingNumber" type="text" ng-model="chinavasionCategory" class="form-control input-md">
+        <option value="categoryName" ng-repeat ="category in categories" >{{ category.name}}</option>
+    </select>
+    </div>
+  </div>
+{% endverbatim %}
+</fieldset>
+</form>
+
 <fieldset ng-show="results.length>0">
 <div >
   <h2>Tracking Result</h2>
@@ -53,4 +96,3 @@
   </table>
 </div>
 </fieldset>
-{%  endverbatim %}

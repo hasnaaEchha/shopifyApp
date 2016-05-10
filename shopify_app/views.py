@@ -111,6 +111,45 @@ def get_products(request):
         out = json.dumps(out)
         return HttpResponse(out, content_type="application/json")
 
+def create_product(title, body_html, vendor, product_type, store_url, token):
+    data={
+        "product": {
+            "title": title,
+            "body_html": body_html,
+            "vendor": vendor,
+            "product_type": product_type,
+            "published": False
+        }
+    }
+    url = '{}{}'.format("https://"+store_url, "/admin/products.json")
+    headers = {'content-type': 'application/json', 'X-Shopify-Access-Token': token}
+    r = requests.post(
+        url,
+
+        data=json.dumps(data),
+        headers=headers
+    )
+
+
+def get_invasion_categories(request):
+    api_key="un0F__J0Vyz8e3QTygBsqY0snYzekBpxiD5UfsxxiDo."
+    data = {
+            "key": api_key,
+            "include_content": "0"
+    }
+    url = '{}{}'.format('https://secure.chinavasion.com','/api/getCategory.php')
+    print url
+    headers = {'content-type': 'application/json'}
+    r = requests.post(
+        url,
+        data=json.dumps(data),
+        headers=headers
+
+    )
+    out=json.loads(r.content)
+    print r
+    out = json.dumps(out)
+    return HttpResponse(out, content_type="application/json")
 
 
 def error404(request):
