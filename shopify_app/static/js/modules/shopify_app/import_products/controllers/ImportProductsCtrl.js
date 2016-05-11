@@ -12,7 +12,7 @@
     function ImportProductsController($window, $scope,$location,$timeout, $localStorage, ShopifyService) {
         $scope.getCategories=function(){
             $scope.$emit('loader-show');
-            ShopifyService.getInvasionCategories().then(function(response){
+            ShopifyService.getInvasionCategories($scope.chinavisionApiKey).then(function(response){
                 console.log(response);
                 $scope.categories=response.data['categories'];
                  $scope.$emit('loader-hide');
@@ -22,16 +22,38 @@
                             level: 'error',
                             sticky: true,
                             title: 'Error',
-                            text:error.statusText
+                            text:"connection error"
                 });
                 $scope.$emit('loader-hide');
             })
         };
+        $scope.exportProducts=function(){
+            $scope.$emit('loader-show');
+            $scope.exportingProducts=true;
+            ShopifyService.exportProductsToShopify($localStorage['shop'],$localStorage['token'],$scope.chinavisionCategory,$scope.chinavisionApiKey).then(
+                function(response){
+                    $scope.$emit('loader-hide');
+                    console.log(response);
+                    $scope.totalImportedProducts=response['data']['count'];
+                    $scope.exportingProducts=false;
+                },function(error){
+                    $scope.exportingProducts=false;
+                    $scope.$emit('notification-show', {
+                            type: 'notification',
+                            level: 'error',
+                            sticky: true,
+                            title: 'Error',
+                            text:"connection error"
+                });
+                $scope.$emit('loader-hide');
+                })
+        }
         $scope.showFromForm=false;
     	var strParams=$location.url().split('?')[1];
         console.log(strParams);
         console.log($localStorage['globalDeal']);
         if(strParams && !$localStorage['globalDeal']){
+            $scope.$emit('loader-show');
             var params = strParams.split('&');
             var param,code,shop;
             for(var i=0; i<params.length;i++){
@@ -48,14 +70,28 @@
             $localStorage['shop'] = shop;
             $localStorage['code'] = code;
             $localStorage['globalDeal']=true;
-            $scope.showFromForm=true;
-            $timeout(function(){$window.location.href = '/'},1000);
+            
+            ShopifyService.createToken($localStorage['shop'],$localStorage['code']).then(function(response){
+                console.log(response);
+                $scope.$emit('loader-hide');
+                $scope.showFromForm=true;
+                $localStorage['token']=response.data['token']['access_token'];
+                $timeout(function(){$window.location.href = '/'},1000);
+            },function(error){
+                $scope.$emit('notification-show', {
+                            type: 'notification',
+                            level: 'error',
+                            sticky: true,
+                            title: 'Error',
+                            text:"connection error"
+                });
+                $scope.$emit('loader-hide');
+            });
         }
         else if($localStorage['globalDeal']) {
-            $scope.getCategories();
+            $scope.showFromForm=true;
+            
         }
-
-
         $scope.goToStore=function(){
             $window.location=$scope.shopifyUrl+"/admin/oauth/authorize?client_id="+$scope.apiKey+"&scope=read_products,write_products&redirect_uri=http://0.0.0.0:8003"
         };
