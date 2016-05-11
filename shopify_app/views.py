@@ -42,13 +42,14 @@ def create_token(request):
     out['token']=r
     out = json.dumps(out)
     return HttpResponse(out, content_type="application/json")
-def create_product(title, body_html, product_type, image,store_url, token):
+def create_product(title, body_html, product_type, image, price,store_url, token):
     data={
         "product": {
             "title": title,
             "body_html": body_html,
             "product_type": product_type,
             "images":[{"src":image}],
+            "price":price
             "published":True
         }
     }
@@ -141,7 +142,7 @@ def export_products(request):
     products = get_chinavasion_products(category_name,api_key, start, count)
     out['count'] = len(products)
     for product in products:
-        create_product(product['short_product_name'],product['overview'],product['category_name'],product['main_picture'],store_url,token)
+        create_product(product['short_product_name'],product['overview'],product['category_name'],product['main_picture'],product['price'],store_url,token)
     out = json.dumps(out)
     return HttpResponse(out, content_type="application/json")
 
