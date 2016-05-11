@@ -26,9 +26,8 @@
                      ShopifyService.getVasionCategoryTotal($scope.categories[i]['name'],$scope.chinavisionApiKey).then(
 
                          function(response){
-                            console.log($scope.categories[i]['name'])
 
-                            $scope.creatProd(0,response['data']['total'],$scope.categories[i]['name'])
+                            $scope.creatProd(0,response['data']['total'],0)
 
                             
 
@@ -49,18 +48,17 @@
                 $scope.$emit('loader-hide');
             })
         };
-        $scope.creatProd=function(start,total,category){
+        $scope.creatProd=function(start,total,categoryIndex){
             console.log(category);
-            ShopifyService.exportProductsToShopify($localStorage['shop'],$localStorage['token'],category,$scope.chinavisionApiKey,start,20).then(
+            ShopifyService.exportProductsToShopify($localStorage['shop'],$localStorage['token'],$scope.categories[categoryIndex]['name'],$scope.chinavisionApiKey,start,20).then(
                 function(response){
                     $scope.startCount=$scope.startCount+20;
                     if($scope.startCount>=total){
                         $scope.creatProd($scope.startCount,total);
                     }
-                    else if(category== lastCat){
+                    else if(categoryIndex==$scope.categories.length-1){
                         $scope.exportingProducts=false;
                     }
-
                 },function(error){
 
                 }
