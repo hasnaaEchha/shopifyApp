@@ -17,7 +17,7 @@
             $scope.$emit('loader-show');
             var start=0;
             
-            $scope.getVasionCategoryTotal(scope.categories[0]['name']);
+            $scope.getVasionCategoryTotal(s$cope.categories[0]['name']);
         };
         $scope.getVasionCategoryTotal=function(catName){
                 
@@ -44,7 +44,7 @@
                     
                     else{
                         $scope.categoryIndex++;
-                        $scope.getVasionCategoryTotal($scope.categories[$scope.scope.categoryIndex])
+                        $scope.getVasionCategoryTotal($scope.categories[$scope.categoryIndex])
                     }
                     
                 },function(error){
