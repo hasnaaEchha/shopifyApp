@@ -283,6 +283,7 @@ def get_chinavasion_cat_total(request):
     result_prod = json.loads(r.content)
     out={}
     out['total']=result_prod['pagination']['total']
+    out['category_name']=category_name
     out = json.dumps(out)
     return HttpResponse(out, content_type="application/json")
 def get_invasion_categories(request):
