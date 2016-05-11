@@ -41,10 +41,12 @@
             ShopifyService.exportProductsToShopify($localStorage['shop'],$localStorage['token'],category,$scope.chinavisionApiKey,start,5).then(
                 function(response){
                     console.log(total);
+                    console.log($scope.startCount);
                     $scope.startCount=$scope.startCount+5;
                     if($scope.startCount<=total){
                         $scope.creatProd($scope.startCount,total);
                     }
+                    console.log($scope.categoryIndex);
                     else{
                         $scope.categoryIndex++;
                         $scope.getVasionCategoryTotal($scope.categories[$scope.categoryIndex]['name'])
