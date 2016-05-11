@@ -17,7 +17,7 @@
             $scope.$emit('loader-show');
             var start=0;
             
-            $scope.getVasionCategoryTotal(s$cope.categories[0]['name']);
+            $scope.getVasionCategoryTotal($scope.categories[0]['name']);
         };
         $scope.getVasionCategoryTotal=function(catName){
                 
