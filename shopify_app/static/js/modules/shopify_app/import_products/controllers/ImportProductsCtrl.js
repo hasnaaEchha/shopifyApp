@@ -14,36 +14,25 @@
             $scope.exportingProducts=true;
             $scope.$emit('loader-show');
             var start=0;
-            var total=0;
+            
             ShopifyService.getInvasionCategories($scope.chinavisionApiKey).then(function(response){
                 console.log(response);
                 $scope.categories=response.data['categories'];
                 for(var i=0;i<$scope.categories.length;i++){
+
                      ShopifyService.getVasionCategoryTotal($scope.categories[i]['name'],$scope.chinavisionApiKey).then(
                          function(response){
-                             total = response['data']['total'];
-                             console.log(total);
-                            while(start<total){
-                                ShopifyService.exportProductsToShopify($localStorage['shop'],$localStorage['token'],$scope.chinavisionCategory,$scope.chinavisionApiKey,start,20).then(
-                                    function(response){
-                                        start=start+20;
-                                    },function(error){
+                            $scope.creatProd(0,response['data']['total'])
 
-                                    }
-                                )
-                            }
-                            if (start<total && i==$scope.categories.length-1){
-                                $scope.exportingProducts=false;
-                            }
+                            
+
                          },function(error){
 
                          })
+                     if(i==1){
+                        break;
+                     }
                 }
-
-
-
-
-
                  $scope.$emit('loader-hide');
             }, function(error){
                 $scope.$emit('notification-show', {
@@ -56,6 +45,18 @@
                 $scope.$emit('loader-hide');
             })
         };
+        $scope.creatProd=function(start,total){
+            ShopifyService.exportProductsToShopify($localStorage['shop'],$localStorage['token'],$scope.chinavisionCategory,$scope.chinavisionApiKey,start,20).then(
+                function(response){
+                    $scope.startCount=$scope.startCount+20;
+                    if($scope.startCount>=total){
+                        $scope.creatProd($scope.startCount,total);
+                    }
+                },function(error){
+
+                }
+            )
+        }
 
         $scope.exportProducts=function(){
             $scope.$emit('loader-show');
