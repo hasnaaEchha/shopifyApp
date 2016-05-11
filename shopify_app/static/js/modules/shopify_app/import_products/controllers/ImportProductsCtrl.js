@@ -10,19 +10,24 @@
         .controller('ImportProductsController',['$window','$scope','$location','$timeout','$localStorage','ShopifyService',
             ImportProductsController]);
     function ImportProductsController($window, $scope,$location,$timeout, $localStorage, ShopifyService) {
+        var lastCat="";
         $scope.getCategories=function(){
             $scope.exportingProducts=true;
             $scope.$emit('loader-show');
             var start=0;
             
+            
             ShopifyService.getInvasionCategories($scope.chinavisionApiKey).then(function(response){
                 console.log(response);
                 $scope.categories=response.data['categories'];
+                lastCat=$scope.categories[$scope.categories.length-1]['name']
                 for(var i=0;i<$scope.categories.length;i++){
 
                      ShopifyService.getVasionCategoryTotal($scope.categories[i]['name'],$scope.chinavisionApiKey).then(
+
                          function(response){
                             console.log($scope.categories[i]['name'])
+
                             $scope.creatProd(0,response['data']['total'],$scope.categories[i]['name'])
 
                             
@@ -30,9 +35,7 @@
                          },function(error){
 
                          })
-                     if(i==1){
-                        break;
-                     }
+                     
                 }
                  $scope.$emit('loader-hide');
             }, function(error){
@@ -54,6 +57,10 @@
                     if($scope.startCount>=total){
                         $scope.creatProd($scope.startCount,total);
                     }
+                    else if(category== lastCat){
+                        $scope.exportingProducts=false;
+                    }
+
                 },function(error){
 
                 }
