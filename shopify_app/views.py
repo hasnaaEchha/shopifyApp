@@ -49,7 +49,7 @@ def create_product(title, body_html, product_type, image,store_url, token):
             "body_html": body_html,
             "product_type": product_type,
             "images":[{"src":image}],
-            "published":False
+            "published":True
         }
     }
     url = '{}{}'.format("https://"+store_url, "/admin/products.json")
