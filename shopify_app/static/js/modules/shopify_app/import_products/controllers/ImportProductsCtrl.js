@@ -17,47 +17,34 @@
             $scope.$emit('loader-show');
             var start=0;
             
-            
-            ShopifyService.getInvasionCategories($scope.chinavisionApiKey).then(function(response){
-                console.log(response);
-                $scope.categories=response.data['categories'];
-                lastCat=$scope.categories[$scope.categories.length-1]['name']
-                for(var i=0;i<$scope.categories.length;i++){
+            $scope.getVasionCategoryTotal(scope.categories[0]['name']);
+        };
+        $scope.getVasionCategoryTotal=function(catName){
+                
 
-                     ShopifyService.getVasionCategoryTotal($scope.categories[i]['name'],$scope.chinavisionApiKey).then(
+             ShopifyService.getVasionCategoryTotal(catName,$scope.chinavisionApiKey).then(
 
-                         function(response){
+                 function(response){
 
-                            $scope.creatProd(0,response['data']['total'],response['data']['category_name'])
+                    $scope.creatProd(0,response['data']['total'],catName)
+                    
+                 },function(error){
 
-                            
-
-                         },function(error){
-
-                         })
+                 })
                      
-                }
-                 $scope.$emit('loader-hide');
-            }, function(error){
-                $scope.$emit('notification-show', {
-                            type: 'notification',
-                            level: 'error',
-                            sticky: true,
-                            title: 'Error',
-                            text:"connection error"
-                });
-                $scope.$emit('loader-hide');
-            })
+                
         };
         $scope.creatProd=function(start,total,category){
-            ShopifyService.exportProductsToShopify($localStorage['shop'],$localStorage['token'],category,$scope.chinavisionApiKey,start,10).then(
+            ShopifyService.exportProductsToShopify($localStorage['shop'],$localStorage['token'],category,$scope.chinavisionApiKey,start,5).then(
                 function(response){
-                    $scope.startCount=$scope.startCount+10;
+                    $scope.startCount=$scope.startCount+5;
                     if($scope.startCount<=total){
                         $scope.creatProd($scope.startCount,total);
                     }
-                    else if(categoryIndex==$scope.categories.length-1){
-                        $scope.exportingProducts=false;
+                    
+                    else{
+                        $scope.categoryIndex++;
+                        $scope.getVasionCategoryTotal($scope.categories[$scope.scope.categoryIndex])
                     }
                     
                 },function(error){
