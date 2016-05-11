@@ -42,11 +42,12 @@
                 function(response){
                     console.log(total);
                     console.log($scope.startCount);
+                    console.log($scope.categoryIndex);
                     $scope.startCount=$scope.startCount+5;
                     if($scope.startCount<=total){
                         $scope.creatProd($scope.startCount,total);
                     }
-                    console.log($scope.categoryIndex);
+
                     else{
                         $scope.categoryIndex++;
                         $scope.getVasionCategoryTotal($scope.categories[$scope.categoryIndex]['name'])
