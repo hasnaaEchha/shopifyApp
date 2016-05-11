@@ -45,7 +45,7 @@
                     console.log($scope.categoryIndex);
                     $scope.startCount=$scope.startCount+5;
                     if($scope.startCount<=total){
-                        $scope.creatProd($scope.startCount,total);
+                        $scope.creatProd($scope.startCount,total,category);
                     }
 
                     else{
