@@ -142,7 +142,7 @@ def export_products(request):
     products = get_chinavasion_products(category_name,api_key, start, count)
     out['count'] = len(products)
     for product in products:
-        create_product(product['short_product_name'],product['overview'],product['category_name'],product['main_picture'],product['price'],store_url,token)
+        create_product(product['short_product_name'],product['overview'],product['category_name'],product['main_picture'],float(product['price']),store_url,token)
     out = json.dumps(out)
     return HttpResponse(out, content_type="application/json")
 
