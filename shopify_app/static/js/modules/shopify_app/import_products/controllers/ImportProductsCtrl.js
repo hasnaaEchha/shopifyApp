@@ -11,6 +11,7 @@
             ImportProductsController]);
     function ImportProductsController($window, $scope,$location,$timeout, $localStorage, ShopifyService) {
         $scope.getCategories=function(){
+            $scope.exportingProducts=true;
             $scope.$emit('loader-show');
             var start=0;
             var total=0;
@@ -29,6 +30,9 @@
 
                                     }
                                 )
+                            }
+                            if (start<total && i==$scope.categories.length-1){
+                                $scope.exportingProducts=false;
                             }
                          },function(error){
 
