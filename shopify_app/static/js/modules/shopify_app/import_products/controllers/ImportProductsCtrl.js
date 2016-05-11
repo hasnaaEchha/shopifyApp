@@ -44,10 +44,9 @@
                     if($scope.startCount<=total){
                         $scope.creatProd($scope.startCount,total);
                     }
-                    
                     else{
                         $scope.categoryIndex++;
-                        $scope.getVasionCategoryTotal($scope.categories[$scope.categoryIndex])
+                        $scope.getVasionCategoryTotal($scope.categories[$scope.categoryIndex]['name'])
                     }
                     
                 },function(error){
