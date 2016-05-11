@@ -12,6 +12,7 @@ import shopify
 admin_token = ""
 from django.forms.models import model_to_dict
 
+
 def home(request):
     return render(request, 'index.html', None)
 
@@ -61,21 +62,44 @@ def create_product(title, body_html, product_type, image,store_url, token):
     )
 
 def get_product_from_vasion_by_cat(category_name,api_key):
-    data = {
-            "key": api_key,
-            "categories": [category_name]
-    }
-    url = '{}{}'.format('https://secure.chinavasion.com','/api/getProductList.php')
-    print url
-    headers = {'content-type': 'application/json'}
-    r = requests.post(
-        url,
-        data=json.dumps(data),
-        headers=headers
+    start = 0
+    result = []
+    get_prod_bool=True
+    count=10
+    while get_prod_bool:
+        data = {
+                "key": api_key,
+                "categories": [category_name],
+                "pagination":{
+                    "start":start,
+                    "count":count
+                }
+        }
+        url = '{}{}'.format('https://secure.chinavasion.com','/api/getProductList.php')
+        print url
+        headers = {'content-type': 'application/json'}
+        r = requests.post(
+            url,
+            data=json.dumps(data),
+            headers=headers
 
-    )
-    result = json.loads(r.content)
-    return result['products']
+        )
+        result_prod = json.loads(r.content)
+        print result_prod, start
+        
+        for prod in result_prod['products']:
+            result.append(prod)
+        if start+count>=result_prod['pagination']['total']:
+            print 'hehooo'
+            get_prod_bool=False
+        start = start +result_prod['pagination']['count']
+        """
+        if result_prod['pagination']['total']-start<count:
+            count = result_prod['pagination']['total']-start
+        """
+        print result_prod['pagination']['total']
+    print len(result)
+    return result
 
 def get_product_by_title(title,store_url,token):
     headers = {'content-type': 'application/json', 'X-Shopify-Access-Token': token}
