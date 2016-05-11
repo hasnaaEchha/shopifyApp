@@ -16,8 +16,11 @@
             $scope.exportingProducts=true;
             $scope.$emit('loader-show');
             var start=0;
-            
-            $scope.getVasionCategoryTotal($scope.categories[0]['name']);
+            ShopifyService.getInvasionCategories($scope.chinavisionApiKey).then(function(response){
+                $scope.categories=response.data['categories'];
+                $scope.getVasionCategoryTotal($scope.categories[0]['name']);
+
+            })
         };
         $scope.getVasionCategoryTotal=function(catName){
                 
