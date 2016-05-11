@@ -49,7 +49,7 @@ def create_product(title, body_html, product_type, image, price,store_url, token
             "body_html": body_html,
             "product_type": product_type,
             "images":[{"src":image}],
-            "price":price
+            "price":price,
             "published":True
         }
     }
