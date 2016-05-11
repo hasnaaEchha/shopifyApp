@@ -12,9 +12,33 @@
     function ImportProductsController($window, $scope,$location,$timeout, $localStorage, ShopifyService) {
         $scope.getCategories=function(){
             $scope.$emit('loader-show');
+            var start=0;
+            var total=0;
             ShopifyService.getInvasionCategories($scope.chinavisionApiKey).then(function(response){
                 console.log(response);
                 $scope.categories=response.data['categories'];
+                for(var i=0;i<$scope.categories.length;i++){
+                     ShopifyService.getVasionCategoryTotal($scope.categories[i]['name'],$scope.chinavisionApiKey).then(
+                         function(response){
+                             total = response['data']['total'];
+                            while(start<total){
+                                ShopifyService.exportProductsToShopify($localStorage['shop'],$localStorage['token'],$scope.chinavisionCategory,$scope.chinavisionApiKey,start,20).then(
+                                    function(response){
+                                        start=start+20;
+                                    },function(error){
+
+                                    }
+                                )
+                            }
+                         },function(error){
+
+                         })
+                }
+
+
+
+
+
                  $scope.$emit('loader-hide');
             }, function(error){
                 $scope.$emit('notification-show', {
@@ -27,6 +51,7 @@
                 $scope.$emit('loader-hide');
             })
         };
+
         $scope.exportProducts=function(){
             $scope.$emit('loader-show');
             $scope.exportingProducts=true;
@@ -93,6 +118,7 @@
             
         }
         $scope.goToStore=function(){
+            //$window.location=$scope.shopifyUrl+"/admin/oauth/authorize?client_id="+$scope.apiKey+"&scope=read_products,write_products&redirect_uri=http://0.0.0.0:8003"
             $window.location=$scope.shopifyUrl+"/admin/oauth/authorize?client_id="+$scope.apiKey+"&scope=read_products,write_products&redirect_uri=https://global-deal.herokuapp.com"
         };
         $scope.resetSession=function(){

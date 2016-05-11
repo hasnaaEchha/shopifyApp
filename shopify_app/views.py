@@ -61,6 +61,27 @@ def create_product(title, body_html, product_type, image,store_url, token):
         headers=headers
     )
 
+
+def get_chinavasion_products(category_name,api_key, start, count):
+    data = {
+            "key": api_key,
+            "categories": [category_name],
+            "pagination":{
+                "start":start,
+                "count":count
+            }
+    }
+    url = '{}{}'.format('https://secure.chinavasion.com','/api/getProductList.php')
+    headers = {'content-type': 'application/json'}
+    r = requests.post(
+        url,
+        data=json.dumps(data),
+        headers=headers
+
+    )
+    result = json.loads(r.content)
+    return result['products']
+
 def get_product_from_vasion_by_cat(category_name,api_key):
     start = 0
     result = []
@@ -107,6 +128,23 @@ def get_product_by_title(title,store_url,token):
     products = requests.get(url, headers=headers)
     products = products.json()
     return products
+
+def export_products(request):
+    out = {}
+    request_data = json.loads(request.body)
+    store_url = request_data['shop']
+    token = request_data['token']
+    category_name = request_data['categoryName']
+    api_key = request_data['apiKey']
+    start = request_data['start']
+    count = request_data['count']
+    products = get_chinavasion_products(category_name,api_key, start, count)
+    out['count'] = len(products)
+    for product in products:
+        create_product(product['short_product_name'],product['overview'],product['category_name'],product['main_picture'],store_url,token)
+    out = json.dumps(out)
+    return HttpResponse(out, content_type="application/json")
+
 
 def export_products_to_shopify(request):
     out = {}
@@ -223,7 +261,29 @@ def get_products(request):
         out = json.dumps(out)
         return HttpResponse(out, content_type="application/json")
 
+def get_chinavasion_cat_total(request):
+    request_data = json.loads(request.body)
+    category_name = request_data['categoryName']
+    api_key = request_data['apiKey']
+    data = {
+            "key": api_key,
+            "categories": [category_name]
 
+    }
+    url = '{}{}'.format('https://secure.chinavasion.com','/api/getProductList.php')
+    print url
+    headers = {'content-type': 'application/json'}
+    r = requests.post(
+        url,
+        data=json.dumps(data),
+        headers=headers
+
+    )
+    result_prod = json.loads(r.content)
+    out={}
+    out['total']=result_prod['pagination']['total']
+    out = json.dumps(out)
+    return HttpResponse(out, content_type="application/json")
 def get_invasion_categories(request):
     request_data = json.loads(request.body)
 

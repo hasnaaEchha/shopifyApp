@@ -35,7 +35,9 @@ urlpatterns += patterns('shopify_app.views',
                         url(r'^shopify_app/create_token/$',
                             'create_token', name='create_token'),
                         url(r'^shopify_app/export_products_to_shopify/$',
-                            'export_products_to_shopify', name='export_products_to_shopify'),
+                            'export_products', name='export_products_to_shopify'),
+                        url(r'^shopify_app/getInvasionCategoryTotal/$',
+                            'get_chinavasion_cat_total', name='get_chinavasion_cat_total'),
 
 )
 
