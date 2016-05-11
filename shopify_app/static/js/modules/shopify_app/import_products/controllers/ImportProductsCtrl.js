@@ -50,7 +50,12 @@
 
                     else{
                         $scope.categoryIndex++;
-                        $scope.getVasionCategoryTotal($scope.categories[$scope.categoryIndex]['name'])
+                        if($scope.categoryIndex==$scope.categories.length){
+                                                $scope.exportingProducts=false;
+                        }else{
+                            $scope.getVasionCategoryTotal($scope.categories[$scope.categoryIndex]['name'])    
+                        }
+                        
                     }
                     
                 },function(error){ 
