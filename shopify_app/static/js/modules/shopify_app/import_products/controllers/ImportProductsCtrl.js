@@ -46,6 +46,7 @@
             })
         };
         $scope.creatProd=function(start,total){
+            console.log($scope.chinavisionCategory);
             ShopifyService.exportProductsToShopify($localStorage['shop'],$localStorage['token'],$scope.chinavisionCategory,$scope.chinavisionApiKey,start,20).then(
                 function(response){
                     $scope.startCount=$scope.startCount+20;
