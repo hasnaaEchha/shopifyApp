@@ -93,7 +93,7 @@
             
         }
         $scope.goToStore=function(){
-            $window.location=$scope.shopifyUrl+"/admin/oauth/authorize?client_id="+$scope.apiKey+"&scope=read_products,write_products&redirect_uri=http://0.0.0.0:8003"
+            $window.location=$scope.shopifyUrl+"/admin/oauth/authorize?client_id="+$scope.apiKey+"&scope=read_products,write_products&redirect_uri=https://global-deal.herokuapp.com"
         };
         $scope.resetSession=function(){
             $localStorage.$reset();
